@@ -1,15 +1,15 @@
-# ---------- ETAPA 1: BUILD ----------
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+# ---------- BUILD ----------
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+COPY . .
 
-RUN mvn clean package -DskipTests
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
 
-# ---------- ETAPA 2: RUNTIME ----------
+# ---------- RUNTIME ----------
 FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
