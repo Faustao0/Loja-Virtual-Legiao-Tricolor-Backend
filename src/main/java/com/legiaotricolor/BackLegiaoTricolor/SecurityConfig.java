@@ -27,17 +27,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/users/client"
+                                "/v3/api-docs/**"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/users/**").permitAll() // 👈 libera todos users
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
-    }
-    
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
