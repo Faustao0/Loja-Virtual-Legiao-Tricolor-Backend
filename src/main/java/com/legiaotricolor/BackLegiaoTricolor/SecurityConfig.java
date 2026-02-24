@@ -22,14 +22,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
+                .cors(cors -> {}) // 👈 nova forma correta
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/users/**").permitAll() // 👈 libera todos users
+                        .requestMatchers("/users/**").permitAll()
                         .anyRequest().permitAll()
                 );
 
