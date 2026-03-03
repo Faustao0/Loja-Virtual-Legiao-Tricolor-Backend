@@ -10,7 +10,9 @@ import com.legiaotricolor.BackLegiaoTricolor.repository.CategoryRepository;
 import com.legiaotricolor.BackLegiaoTricolor.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final CloudinaryService cloudinaryService;
 
     public ProductResponseDTO create(ProductRequestDTO dto) {
 
@@ -95,5 +98,31 @@ public class ProductService {
     private Product findEntity(UUID id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Produto não encontrado"));
+    }
+
+    public ProductResponseDTO createWithImage(
+            String name,
+            String description,
+            Double price,
+            Integer stockQuantity,
+            Boolean active,
+            Category category,
+            MultipartFile image
+    ) {
+
+        String imageUrl = cloudinaryService.uploadImage(image);
+
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(BigDecimal.valueOf(price));
+        product.setStockQuantity(stockQuantity);
+        product.setActive(active);
+        product.setCategory(category);
+        product.setImageUrl(imageUrl);
+
+        productRepository.save(product);
+
+        return new ProductResponseDTO(product);
     }
 }

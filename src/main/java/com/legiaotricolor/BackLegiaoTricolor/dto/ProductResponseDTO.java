@@ -1,5 +1,7 @@
 package com.legiaotricolor.BackLegiaoTricolor.dto;
 
+import com.legiaotricolor.BackLegiaoTricolor.domain.Product;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +11,7 @@ import java.util.UUID;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class ProductResponseDTO {
 
     private UUID id;
@@ -20,4 +23,6 @@ public class ProductResponseDTO {
     private String categoryName;
     List<ProductImageDTO> images;
 
+    public ProductResponseDTO(Product product) {
+    }
 }
