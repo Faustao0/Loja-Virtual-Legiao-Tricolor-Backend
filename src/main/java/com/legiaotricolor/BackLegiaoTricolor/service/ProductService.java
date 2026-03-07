@@ -106,9 +106,12 @@ public class ProductService {
             Double price,
             Integer stockQuantity,
             Boolean active,
-            Category category,
+            UUID categoryId,
             MultipartFile image
     ) {
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException("Categoria não encontrada"));
 
         String imageUrl = cloudinaryService.uploadImage(image);
 
@@ -123,6 +126,6 @@ public class ProductService {
 
         productRepository.save(product);
 
-        return new ProductResponseDTO(product);
+        return ProductMapper.toDTO(product);
     }
 }

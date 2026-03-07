@@ -25,7 +25,7 @@ public class AdminProductController {
             @RequestParam Double price,
             @RequestParam Integer stockQuantity,
             @RequestParam Boolean active,
-            @RequestParam Category category,
+            @RequestParam UUID categoryId,
             @RequestParam MultipartFile image
     ) {
         return productService.createWithImage(
@@ -34,7 +34,7 @@ public class AdminProductController {
                 price,
                 stockQuantity,
                 active,
-                category,
+                categoryId,
                 image
         );
     }
