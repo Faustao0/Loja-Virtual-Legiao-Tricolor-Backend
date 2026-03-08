@@ -21,6 +21,7 @@ public class ProductResponseDTO {
     private Integer stockQuantity;
     private Boolean active;
     private String categoryName;
+    private String imageUrl;
     List<ProductImageDTO> images;
 
     public ProductResponseDTO(Product product) {

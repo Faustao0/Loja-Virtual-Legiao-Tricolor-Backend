@@ -6,6 +6,7 @@ import com.legiaotricolor.BackLegiaoTricolor.dto.ProductResponseDTO;
 import com.legiaotricolor.BackLegiaoTricolor.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,25 +19,12 @@ public class AdminProductController {
 
     private final ProductService productService;
 
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductResponseDTO create(
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam Double price,
-            @RequestParam Integer stockQuantity,
-            @RequestParam Boolean active,
-            @RequestParam UUID categoryId,
-            @RequestParam MultipartFile image
+            @Valid @RequestPart("product") ProductRequestDTO product,
+            @RequestPart("image") MultipartFile image
     ) {
-        return productService.createWithImage(
-                name,
-                description,
-                price,
-                stockQuantity,
-                active,
-                categoryId,
-                image
-        );
+        return productService.createWithImage(product, image);
     }
 
     @PutMapping("/{id}")
