@@ -18,8 +18,11 @@ public class ProductMapper {
                 .price(product.getPrice())
                 .stockQuantity(product.getStockQuantity())
                 .active(product.getActive())
-                .categoryName(product.getCategory().getName())
-                .imageUrl(product.getImageUrl())
+                .categoryName(
+                        product.getCategory() != null
+                                ? product.getCategory().getName()
+                                : null
+                )
                 .build();
     }
 }

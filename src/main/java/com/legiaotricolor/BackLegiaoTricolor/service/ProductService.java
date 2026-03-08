@@ -101,24 +101,28 @@ public class ProductService {
     }
 
     public ProductResponseDTO createWithImage(
-            ProductRequestDTO dto,
+            String name,
+            String description,
+            Double price,
+            Integer stockQuantity,
+            Boolean active,
+            UUID categoryId,
             MultipartFile image
     ) {
 
-        Category category = categoryRepository.findById(dto.getCategoryId())
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException("Categoria não encontrada"));
 
         String imageUrl = cloudinaryService.uploadImage(image);
 
-        Product product = Product.builder()
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .price(dto.getPrice())
-                .stockQuantity(dto.getStockQuantity())
-                .active(true)
-                .category(category)
-                .imageUrl(imageUrl)
-                .build();
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(BigDecimal.valueOf(price));
+        product.setStockQuantity(stockQuantity);
+        product.setActive(active);
+        product.setCategory(category);
+        product.setImageUrl(imageUrl);
 
         productRepository.save(product);
 
