@@ -21,5 +21,8 @@ public class ProductRequestDTO {
     private Integer stockQuantity;
 
     @NotNull
+    private String categoryName;
+
+    @NotNull
     private UUID categoryId;
 }

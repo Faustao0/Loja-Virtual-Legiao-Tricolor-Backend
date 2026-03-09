@@ -24,23 +24,33 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final CloudinaryService cloudinaryService;
 
-    public ProductResponseDTO create(ProductRequestDTO dto) {
+    public ProductResponseDTO createWithImage(
+            String name,
+            String description,
+            Double price,
+            Integer stockQuantity,
+            Boolean active,
+            String categoryName,
+            MultipartFile image
+    ) {
 
-        Category category = categoryRepository.findById(dto.getCategoryId())
+        Category category = categoryRepository.findByName(categoryName)
                 .orElseThrow(() -> new BusinessException("Categoria não encontrada"));
 
-        Product product = Product.builder()
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .price(dto.getPrice())
-                .stockQuantity(dto.getStockQuantity())
-                .category(category)
-                .active(true)
-                .build();
+        String imageUrl = cloudinaryService.uploadImage(image);
 
-        return ProductMapper.toDTO(
-                productRepository.save(product)
-        );
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(BigDecimal.valueOf(price));
+        product.setStockQuantity(stockQuantity);
+        product.setActive(active);
+        product.setCategory(category);
+        product.setImageUrl(imageUrl);
+
+        productRepository.save(product);
+
+        return ProductMapper.toDTO(product);
     }
 
     public ProductResponseDTO update(UUID id, ProductRequestDTO dto) {
@@ -98,34 +108,5 @@ public class ProductService {
     private Product findEntity(UUID id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Produto não encontrado"));
-    }
-
-    public ProductResponseDTO createWithImage(
-            String name,
-            String description,
-            Double price,
-            Integer stockQuantity,
-            Boolean active,
-            UUID categoryId,
-            MultipartFile image
-    ) {
-
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new BusinessException("Categoria não encontrada"));
-
-        String imageUrl = cloudinaryService.uploadImage(image);
-
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(BigDecimal.valueOf(price));
-        product.setStockQuantity(stockQuantity);
-        product.setActive(active);
-        product.setCategory(category);
-        product.setImageUrl(imageUrl);
-
-        productRepository.save(product);
-
-        return ProductMapper.toDTO(product);
     }
 }
