@@ -39,6 +39,8 @@ public class ProductService {
 
         String imageUrl = cloudinaryService.uploadImage(image);
 
+        System.out.println("IMAGE URL CLOUDINARY: " + imageUrl);
+
         Product product = new Product();
         product.setName(name);
         product.setDescription(description);
