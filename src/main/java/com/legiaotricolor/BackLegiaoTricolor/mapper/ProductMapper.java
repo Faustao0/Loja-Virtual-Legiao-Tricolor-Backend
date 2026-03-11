@@ -6,7 +6,6 @@ import com.legiaotricolor.BackLegiaoTricolor.dto.ProductResponseDTO;
 public class ProductMapper {
 
     private ProductMapper() {
-        // evita instanciação
     }
 
     public static ProductResponseDTO toDTO(Product product) {
@@ -23,6 +22,7 @@ public class ProductMapper {
                                 ? product.getCategory().getName()
                                 : null
                 )
+                .imageUrl(product.getImageUrl())
                 .build();
     }
 }

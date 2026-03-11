@@ -35,6 +35,7 @@ public class Product {
 
     private Boolean active = true;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne
@@ -45,5 +46,6 @@ public class Product {
     private List<ProductImage> images = new ArrayList<>();
 
     public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
