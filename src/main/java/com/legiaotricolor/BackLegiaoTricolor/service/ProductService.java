@@ -39,7 +39,7 @@ public class ProductService {
 
         String imageUrl = cloudinaryService.uploadImage(image);
 
-        System.out.println("IMAGE URL CLOUDINARY: " + imageUrl);
+        System.out.println("URL CLOUDINARY: " + imageUrl);
 
         Product product = new Product();
         product.setName(name);
@@ -50,9 +50,11 @@ public class ProductService {
         product.setCategory(category);
         product.setImageUrl(imageUrl);
 
-        productRepository.save(product);
+        System.out.println("PRODUCT IMAGE BEFORE SAVE: " + product.getImageUrl());
 
-        return ProductMapper.toDTO(product);
+        Product savedProduct = productRepository.save(product);
+
+        return ProductMapper.toDTO(savedProduct);
     }
 
     public ProductResponseDTO update(UUID id, ProductRequestDTO dto) {
