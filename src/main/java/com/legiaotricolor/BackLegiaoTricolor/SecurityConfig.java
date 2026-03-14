@@ -13,16 +13,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> {}) // ativa o CorsConfig
+                .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 👈 LIBERA PREFLIGHT
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        ).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/admin/**").permitAll()
                         .anyRequest().permitAll()
                 );
